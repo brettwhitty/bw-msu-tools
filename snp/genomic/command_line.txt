@@ -1,0 +1,5 @@
+gmap -g genomic_assembly.fasta -B 2 -K 5000 --maponly -t 4 -f 2 -b -n 1 est_assembly.fasta > gmap.gff
+ls *.gff | perl -ne 'chomp; /^(.*)\.gff/; my $pre = $1; system("./fix_gmap_gff.pl <$_ >$pre.fix.gff");'
+ls *.fix.gff | perl -ne 'chomp; /^(.*)\.fix.gff/; my $pre = $1; system("grep mRNA $_ > $pre.mRNA.gff");'
+ls *.mRNA.gff | perl -ne 'chomp; /^(.*).gmap.mRNA.gff/; my $pre = $1; system("~/SVN/gff/filter_gff3_on_attributes.pl -f 'mRNA' --id_cutoff 95 --cov_cutoff 90 -i $_ -o $pre.gmap.id_95_cov_90.gff");'
+cat *.id_95_cov_90.gff | perl -ne 'chomp; my @t = split("\t"); $t[8] =~ /Name=([^;]+);.*Coverage=([^;]+).*Identity=([^;]+)/; print "$1\t$t[0]\t$t[3]\t$t[4]\t$2\t$3\n";' >all.gmap_table.txt

@@ -43,8 +43,8 @@ my $months = {
 {
     my $db_name     = 'sol_seq';
     my $db_server   = 'mysql';
-    my $db_user     = 'access';
-    my $db_pass     = 'access';
+    my $db_user     = $ENV{'DB_USER'};
+    my $db_pass     = $ENV{'DB_PASS'};
    
     my $files_root = '';
 
@@ -60,8 +60,8 @@ my $months = {
             'db_host'   =>  'pg-dev.plantbiology.msu.edu',
             'db_name'   =>  'sol_datastore',
             'db_table'  =>  'file',
-            'db_user'   =>  'whitty',
-            'db_pass'   =>  'whitty0',
+            'db_user'   =>  $db_user,
+            'db_pass'   =>  $db_pass,
                                    );
 
         my $self = {'file' => $ds};

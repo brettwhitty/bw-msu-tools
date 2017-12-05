@@ -5,6 +5,7 @@
 ## that have already been loaded to a Sol::SeqDB database
 ## and update the database information for those records
 
+## use lib path to Sol::SeqDB
 use lib '/home/whitty/work/testseqdb/';
 #use lib '/home/whitty/SVN/lib';
 
@@ -13,6 +14,8 @@ use warnings;
 use Carp;
 
 use File::Path;
+use File::Temp qw{ tmpnam };
+$File::Temp::KEEPALL = 0;
 #use DateTime;
 #use Roman;
 use Time::Piece;
@@ -104,11 +107,16 @@ while (<$in_fh>) {
     
         my $out_gbk = "$gi.gbk";
 
-        ## write the genbank flat file to the datastore
-        my $gbk_fh = $db->{'file'}->create_fh($out_gbk);
+        ## write the genbank flat file to a temporary file in memory
+        my $temp_name = tmpnam(DIR => '/dev/shm', UNLINK => 1, CLEANUP => 1, OPEN => 0);
+        open my $gbk_fh, '>', $temp_name or confess "Failed to open temp file '$temp_name' for writing: $!";
+        
         print $gbk_fh $gbk_out_string; 
         $gbk_out_string = '';
         close $gbk_fh;
+        
+        ## copy temp file into the database
+        $db->{'file'}->copy($temp_name, $out_gbk);
 
         ## add the record to the database
         my $gb_atts = $db->get_gb_atts($gi) or confess "Failed to get atts for GI '$gi'";

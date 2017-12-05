@@ -1,11 +1,12 @@
-#!/opt/rocks/bin/perl
+#!/usr/bin/env perl
 
 ## Converts a predicted SNPs table into GFF3
 
 #use strict;
 use warnings;
 
-use lib "/home/whitty/SVN/lib";
+use FindBin;
+use lib "$FindBin::Bin/../lib";
 use MyIO;
 
 use Bio::SeqFeature::Generic;

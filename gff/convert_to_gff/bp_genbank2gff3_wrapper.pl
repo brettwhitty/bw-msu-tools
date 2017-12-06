@@ -14,7 +14,9 @@
 
 $| = 1;
 
-my $bp_genbank2gff3 = '/home/whitty/SVN/bp_genbank2gff3.pl';
+use FindBin qw{ $RealBin };
+
+my $bp_genbank2gff3 = $RealBin.'/bp_genbank2gff3.pl';
 
 my $cmd_line = shift @ARGV || die "Must provide command line";
 my $infile = shift @ARGV || die "Must provide input file";

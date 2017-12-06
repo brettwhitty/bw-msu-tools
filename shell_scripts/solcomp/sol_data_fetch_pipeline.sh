@@ -1,5 +1,8 @@
 #!/bin/bash
 
+## this script's path
+SCRIPT_PATH="`( cd $( dirname \"$0\" ) && pwd )`"
+
 ## bioperl
 export PERL5LIB="/scratch/whitty/gmod/bioperl-live"
 
@@ -8,22 +11,29 @@ set -e
 ## set a umask that will allow group rw
 umask 006;
 
-
 ## set working directory root
-WORK_DIR_ROOT=/projects/solcomp/data_working
+WORK_DIR_ROOT=/tmp/solcomp/data_working
 
+## set tools repo dir
+TOOLS_REPO="${SCRIPT_PATH}/../.."
 
 ## scripts used
-FETCH_GENBANK_GIS="/home/whitty/SVN/gb/fetch_genbank_gis_by_entrez_query.pl"
-FETCH_GENBANK_FLATFILES="/home/whitty/SVN/gb/fetch_gbff_from_genbank_by_gi_list.pl"
-SPLIT_GENBANK_FLATFILES="/home/whitty/SVN/gb/split_genbank_flat_files.pl"
-MERGE_GENBANK_FLATFILES="/home/whitty/SVN/gb/merge_gb_by_list_file.pl"
-GENBANK_TO_GFF3="/home/whitty/SVN/bp_genbank2gff3_wrapper.pl"
-FETCH_PUTS="/home/whitty/SVN/mirror_plantgdb_puts_by_taxon.pl"
-PUTS_FASTA_TO_GFF3="/home/whitty/bin/gmod_fasta2gff3.pl" ## copied from GMOD installation
-TAXONOMY_TEST="/home/whitty/SVN/taxonomy/taxon_id_is_solanaceae.pl"
-GET_SCIENTIFIC_NAME="/home/whitty/SVN/taxonomy/get_scientific_name.pl"
-SCP_FILES="/home/whitty/SVN/scp_sequences_to_ftp_site.pl"
+#### ...for fetching Solanaceae sequence records from GenBank
+FETCH_GENBANK_GIS="${TOOLS_REPO}/gb/fetch_genbank_gis_by_entrez_query.pl"
+FETCH_GENBANK_FLATFILES="${TOOLS_REPO}/gb/fetch_gbff_from_genbank_by_gi_list.pl"
+SPLIT_GENBANK_FLATFILES="${TOOLS_REPO}/gb/split_genbank_flat_files.pl"
+MERGE_GENBANK_FLATFILES="${TOOLS_REPO}/gb/merge_gb_by_list_file.pl"
+#### ...for converting GB flat files to GFF3
+GENBANK_TO_GFF3="${TOOLS_REPO}/gff/convert_to_gff/bp_genbank2gff3_wrapper.pl" ## see comments in this script
+#### ...for fetching PlantGDB PUTs files
+FETCH_PUTS="${TOOLS_REPO}/solcomp/site-utils/mirror_plantgdb_puts_by_taxon.pl"
+### ...for converting PUTs fasta to GFF3
+PUTS_FASTA_TO_GFF3="${TOOLS_REPO}/gff/convert_to_gff/gmod_fasta2gff3.pl" ## copied from GMOD installation
+### ...check that records fetched are Solanaceae (by taxon ID)
+TAXONOMY_TEST="${TOOLS_REPO}/taxonomy/taxon_id_is_solanaceae.pl"
+GET_SCIENTIFIC_NAME="${TOOLS_REPO}/taxonomy/get_scientific_name.pl"
+### ...for copying the GBFF, GFF3, FASTA, etc. files created to the FTP site
+SCP_FILES="${TOOLS_REPO}/solcomp/site-utils/scp_sequences_to_ftp_site.pl"
 
 
 ## flag for allowing resuming of previous runs

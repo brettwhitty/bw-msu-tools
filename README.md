@@ -14,6 +14,4 @@ that I'd modified to fix bugs (eg: to correct GFF3 encoding, etc.) --- while wor
 
 See https://buell-lab.github.io/
 
-P.S.: At the time these scripts were written, dumping your *personal utility scripts* into a public repo was still sort of a thing that only
-folks into peacocking would do (and maybe it's just that more bioinformatics folks are into peacocking now); in any case, that's why these
-are only being deposited as an archival mirror here now. Yes it's Perl code, and yes there's a lot of it.
+:)
